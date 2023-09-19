@@ -11,8 +11,10 @@ import (
 )
 
 func main() {
+	// Создание командной строки
 	var rootCmd = &cobra.Command{Use: "gencli.exe"}
 
+	// Создание нового файла
 	var createFileCmd = &cobra.Command{
 		Use:   "createfile [file-name]",
 		Short: "Create a new file in the current directory",
@@ -43,8 +45,10 @@ func main() {
 		},
 	}
 
+	// Добавляем команду в консоль
 	rootCmd.AddCommand(createFileCmd)
 
+	// Создание новой директории
 	var createDirCmd = &cobra.Command{
 		Use:   "createdir [dir-name]",
 		Short: "Create a new directory in the current directory",
@@ -72,6 +76,7 @@ func main() {
 
 	rootCmd.AddCommand(createDirCmd)
 
+	// Удаление файла
 	var deleteFileCmd = &cobra.Command{
 		Use:   "deletefile [file-name]",
 		Short: "Delete a file in the current directory",
@@ -99,6 +104,7 @@ func main() {
 
 	rootCmd.AddCommand(deleteFileCmd)
 
+	// Удаление директории
 	var deleteDirCmd = &cobra.Command{
 		Use:   "deletedir [dir-name]",
 		Short: "Delete a directory in the current directory",
@@ -125,6 +131,7 @@ func main() {
 	}
 	rootCmd.AddCommand(deleteDirCmd)
 
+	// Генерация кода по шаблону
 	var generateCmd = &cobra.Command{
 		Use:   "generate [template] [output] --name [name]",
 		Short: "Generate code based on template",
@@ -183,9 +190,9 @@ func main() {
 
 	generateCmd.Flags().String("name", "", "Name to insert into the template")
 
-	// Добавьте эту команду к вашему rootCmd
 	rootCmd.AddCommand(generateCmd)
 
+	// Получение информации о текущей директории
 	var currentDirCmd = &cobra.Command{
 		Use:   "currentdir",
 		Short: "Show the current working directory",
@@ -201,6 +208,7 @@ func main() {
 
 	rootCmd.AddCommand(currentDirCmd)
 
+	// Если в консоль введены неверные аргументы
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
