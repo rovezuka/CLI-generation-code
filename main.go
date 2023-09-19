@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	var rootCmd = &cobra.Command{Use: "filecli"}
+	var rootCmd = &cobra.Command{Use: "gencli.exe"}
 
 	var createFileCmd = &cobra.Command{
 		Use:   "createfile [file-name]",
@@ -42,6 +42,33 @@ func main() {
 	}
 
 	rootCmd.AddCommand(createFileCmd)
+
+	var createDirCmd = &cobra.Command{
+		Use:   "createdir [dir-name]",
+		Short: "Create a new directory in the current directory",
+		Args:  cobra.ExactArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			dirName := args[0]
+
+			exePath, err := os.Executable()
+			if err != nil {
+				fmt.Printf("Failed to get executable path: %s\n", err)
+				return
+			}
+
+			projectDir := filepath.Dir(exePath)
+
+			dirPath := filepath.Join(projectDir, dirName)
+			if err := os.Mkdir(dirPath, os.ModePerm); err != nil {
+				fmt.Printf("Failed to create directory: %s\n", err)
+				return
+			}
+
+			fmt.Printf("Created directory: %s\n", dirPath)
+		},
+	}
+
+	rootCmd.AddCommand(createDirCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
