@@ -16,6 +16,7 @@ func main() {
 
 	// Создание нового файла
 	var createFileCmd = &cobra.Command{
+		// Передаем информацию о команде для использования в консоли
 		Use:   "createfile [file-name]",
 		Short: "Create a new file in the current directory",
 		Args:  cobra.ExactArgs(1),
