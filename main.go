@@ -70,6 +70,59 @@ func main() {
 
 	rootCmd.AddCommand(createDirCmd)
 
+	var deleteFileCmd = &cobra.Command{
+		Use:   "deletefile [file-name]",
+		Short: "Delete a file in the current directory",
+		Args:  cobra.ExactArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			fileName := args[0]
+
+			exePath, err := os.Executable()
+			if err != nil {
+				fmt.Printf("Failed to get executable path: %s\n", err)
+				return
+			}
+
+			projectDir := filepath.Dir(exePath)
+
+			filePath := filepath.Join(projectDir, fileName)
+			if err := os.Remove(filePath); err != nil {
+				fmt.Printf("Failed to delete file: %s\n", err)
+				return
+			}
+
+			fmt.Printf("Deleted file: %s\n", filePath)
+		},
+	}
+
+	rootCmd.AddCommand(deleteFileCmd)
+
+	var deleteDirCmd = &cobra.Command{
+		Use:   "deletedir [dir-name]",
+		Short: "Delete a directory in the current directory",
+		Args:  cobra.ExactArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			dirName := args[0]
+
+			exePath, err := os.Executable()
+			if err != nil {
+				fmt.Printf("Failed to get executable path: %s\n", err)
+				return
+			}
+
+			projectDir := filepath.Dir(exePath)
+
+			dirPath := filepath.Join(projectDir, dirName)
+			if err := os.RemoveAll(dirPath); err != nil {
+				fmt.Printf("Failed to delete directory: %s\n", err)
+				return
+			}
+
+			fmt.Printf("Deleted directory: %s\n", dirPath)
+		},
+	}
+	rootCmd.AddCommand(deleteDirCmd)
+
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
